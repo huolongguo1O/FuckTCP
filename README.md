@@ -3,5 +3,5 @@
 spoof your tcp.
 ## Usage:
 ```
-python fucktcp.py <interface> <target> <spoof>
+python fucktcp.py <interface> <target> <spoof> <targetport> <spoofport>
 ```
