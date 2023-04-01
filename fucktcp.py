@@ -80,5 +80,5 @@ if __name__ == '__main__':
         time.sleep(1)
         tcp(argv[1], argv[2], argv[3],int(argv[4]),int(argv[5]))
     except IndexError:
-        print("Usage: arpspoof.py <interface> <target> <spoof> <targetport> <spoofport>")
+        print("Usage: fucktcp.py <interface> <target> <spoof> <targetport> <spoofport>")
 
